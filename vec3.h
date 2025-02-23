@@ -46,6 +46,11 @@ public:
 		return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
 	}
 
+	bool near_zero() const {
+		auto s = 1e-8;
+		return (std::fabs(e[0]) < s) && (std::fabs(e[1]) < s) && (std::fabs(e[2]) < s);
+	}
+
 	static vec3 random() {
 		return vec3(random_double(), random_double(), random_double());
 	}
@@ -72,6 +77,10 @@ inline vec3 operator+(const vec3& u, const vec3& v) {
 inline vec3 operator-(const vec3& u, const vec3& v) {
 	return vec3(u.e[0] - v.e[0], u.e[1] - v.e[1], u.e[2] - v.e[2]);
 } 
+
+inline vec3 operator*(const vec3& u, const vec3& v) {
+	return vec3(u.e[0] * v.e[0], u.e[1] * v.e[1], u.e[2] * v.e[2]);
+}
 
 inline vec3 operator*(double t, const vec3& v) {
 	return vec3(t*v.e[0], t*v.e[1], t*v.e[2]);
@@ -113,6 +122,10 @@ inline vec3 random_on_hemisphere(const vec3& normal) {
 	if (dot(on_unit_sphere, normal) > 0.0)
 		return on_unit_sphere;
 	return -on_unit_sphere;
+}
+
+inline vec3 reflect(const vec3 &v, const vec3 &n) {
+	return v - 2 * dot(v, n) * n;
 }
 
 #endif
